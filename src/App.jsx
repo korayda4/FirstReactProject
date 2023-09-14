@@ -5,6 +5,7 @@ export const App = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchProduct, setSearchProduct] = useState("");
   const [listProduct, setListProduct] = useState("12");
+  const [openCart, setOpenCart] = useState(false);
 
   const productList = [
     {
@@ -105,9 +106,11 @@ export const App = () => {
         <div className="listItem" key={x.id}>
           <h2 className="title">{x.title}</h2>
           <div className="info">
+            <button className="buyBtn">Sepete Ekle</button>
+            <div className="information">
             <h4 className="price">Fiyat: {x.price}TL </h4>
-            <h4 className="category">Kategori: {x.category} </h4>
             <h4 className="stock">Stok: {x.stock} Adet </h4>
+            </div>
           </div>
         </div>
       );
@@ -115,8 +118,25 @@ export const App = () => {
     return null;
   });
 
+  const setCart = (
+      <div className={`slideMenu ${openCart ? 'active' : ''}`}>
+        <img src="../src/assets/img/icons8-back-36.png" onClick={() => setOpenCart(false)} alt="" />
+        <div className="slideContainer">
+          <h1>SEPETİM</h1>
+          <div className="products">
+            <h3>deneme</h3>
+          </div>
+          <div className="total">
+            4120893TL
+          </div>
+        </div>
+      </div>
+  )
+
+
   const clickedVar = (e) => {
     setSelectedCategory(e.target.textContent);
+    
   }
   
   const categories = ["All","Elektronik","Tekstil","Icecek","Kamp","Spor","Oyuncak"];
@@ -128,9 +148,11 @@ export const App = () => {
 
   return (
     <div className="container">
+      {setCart}
       <div className="pageTitle">
         <h1>PRODUCT</h1>
         <div className="input-select">
+          <img className="shoppingCart" onClick={(e) => {if(e.target.className === "shoppingCart") setOpenCart(true);}} src="../src/assets/img/icons8-shopping-cart-48.png" alt="" />
           <input onChange={(e) => {setSearchProduct(e.target.value)}} value={searchProduct} className="searchInput" type="text" placeholder="Search Product"/>
           <select  name="" id="selectItem" onChange={(e) => {setListProduct(e.target.value)}} value={listProduct}>
             <option value="all" disabled>Listeleme Ölçeği</option>
