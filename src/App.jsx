@@ -4,6 +4,7 @@ import "./App.css"
 export const App = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchProduct, setSearchProduct] = useState("");
+  const [listProduct, setListProduct] = useState("12");
 
   const productList = [
     {
@@ -91,12 +92,15 @@ export const App = () => {
       stock:3
     }
   ]
-
+  let listingProduct = 1;
   const productRender = productList.map((x) => {
+    
+    if(listingProduct > listProduct) return
     if (
       (selectedCategory === null || selectedCategory === "All" || x.category === selectedCategory) &&
       (searchProduct === "" || x.title.toLowerCase() === searchProduct.toLowerCase())
     ) {
+      listingProduct++;
       return (
         <div className="listItem" key={x.id}>
           <h2 className="title">{x.title}</h2>
@@ -110,12 +114,9 @@ export const App = () => {
     }
     return null;
   });
-  
-
 
   const clickedVar = (e) => {
-    const clickedCategory = e.target.textContent;
-    setSelectedCategory(clickedCategory);
+    setSelectedCategory(e.target.textContent);
   }
   
   const categories = ["All","Elektronik","Tekstil","Icecek","Kamp","Spor","Oyuncak"];
@@ -131,12 +132,11 @@ export const App = () => {
         <h1>PRODUCT</h1>
         <div className="input-select">
           <input onChange={(e) => {setSearchProduct(e.target.value)}} value={searchProduct} className="searchInput" type="text" placeholder="Search Product"/>
-          <select name="" id="selectItem">
+          <select  name="" id="selectItem" onChange={(e) => {setListProduct(e.target.value)}} value={listProduct}>
             <option value="all" disabled>Listeleme Ölçeği</option>
-            <option value="2" >2 Ürün</option>
-            <option value="4" >4 Ürün</option>
             <option value="6" >6 Ürün</option>
-            <option value="8" >8 Ürün</option>
+            <option value="9" >9 Ürün</option>
+            <option value="12" >12 Ürün</option>
           </select>
         </div>
         </div>
