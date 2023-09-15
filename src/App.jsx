@@ -6,6 +6,8 @@ export const App = () => {
   const [searchProduct, setSearchProduct] = useState("");
   const [listProduct, setListProduct] = useState("12");
   const [openCart, setOpenCart] = useState(false);
+  const [addCart, setAddCart] = useState([]);
+
 
   const productList = [
     {
@@ -98,7 +100,7 @@ export const App = () => {
     
     if(listingProduct > listProduct) return
     if (
-      (selectedCategory === null || selectedCategory === "All" || x.category === selectedCategory) &&
+      (selectedCategory === null || selectedCategory === "Hepsi" || x.category === selectedCategory) &&
       (searchProduct === "" || x.title.toLowerCase() === searchProduct.toLowerCase())
     ) {
       listingProduct++;
@@ -106,7 +108,7 @@ export const App = () => {
         <div className="listItem" key={x.id}>
           <h2 className="title">{x.title}</h2>
           <div className="info">
-            <button className="buyBtn">Sepete Ekle</button>
+            <button onClick={(e) => {addProduct(e.target.parentElement.parentElement)}} className="buyBtn" id={x.id}>Sepete Ekle</button>
             <div className="information">
             <h4 className="price">Fiyat: {x.price}TL </h4>
             <h4 className="stock">Stok: {x.stock} Adet </h4>
@@ -118,28 +120,39 @@ export const App = () => {
     return null;
   });
 
-  const setCart = (
+  const addProduct = (e) => {
+    console.log(e);
+    setAddCart([...addCart,e])
+    // setAddCart([addCart.push(e)])
+    // setAddCart(...addCart,e)
+    console.log(addCart);
+  }
+
+  const setCart =(
       <div className={`slideMenu ${openCart ? 'active' : ''}`}>
         <img src="../src/assets/img/icons8-back-36.png" onClick={() => setOpenCart(false)} alt="" />
         <div className="slideContainer">
           <h1>SEPETİM</h1>
-          <div className="products">
-            <h3>deneme</h3>
-          </div>
+          {addCart.map((item,index) => (
+            <div className="product" key={index}>
+              <h2>{item.children[0].textContent}</h2>
+              <h4>{item.children[1].children[1].children[0].textContent}</h4>
+            </div>
+          ))}
           <div className="total">
             4120893TL
           </div>
         </div>
       </div>
   )
+  
 
 
   const clickedVar = (e) => {
     setSelectedCategory(e.target.textContent);
-    
   }
   
-  const categories = ["All","Elektronik","Tekstil","Icecek","Kamp","Spor","Oyuncak"];
+  const categories = ["Hepsi","Elektronik","Tekstil","Icecek","Kamp","Spor","Oyuncak"];
   const renderCategory = categories.map(x => {
     return(
       <a onClick={clickedVar} className="categoryLink" href="#" key={x}>{x}</a>

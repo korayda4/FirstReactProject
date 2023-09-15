@@ -76,7 +76,6 @@ body {
   padding: 4px;
   gap: 16px;
   height: 200px;
-  width:770PX;
   border-radius: 4px;
   background-color: #f8f8f8;
   border-top: none;
@@ -88,7 +87,7 @@ body {
 }
 
 .listContainer {
-  min-width: 775px;
+  min-width: 790px;
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -161,10 +160,11 @@ body {
   overflow: scroll;
   overflow-x: hidden;
   transition: 400ms;
+  width: 250px;
 }
 
 .slideMenu.active {
-  right: 0px;
+  right: -10px;
   transition: 400ms;
 }
 
@@ -177,11 +177,26 @@ body {
 }
 
 .slideMenu img {
-  /* position: absolute; */
+  position: absolute;
+  left: 0px;
+  top: calc(50%);
   transform: scaleX(-1);
   cursor: pointer;
 }
 
 .slideMenu img:hover {
   transform: scale(1.1)scaleX(-1);
+}
+
+.product {
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  width: 200px;
+  font-size: 10px;
+  margin: 0 auto;
+  border-bottom: 0.5px solid rgba(92, 91, 91, 0.521);
 }
