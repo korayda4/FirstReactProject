@@ -8,7 +8,6 @@ export const App = () => {
   const [openCart, setOpenCart] = useState(false);
   const [addCart, setAddCart] = useState([]);
 
-
   const productList = [
     {
       id:1,
@@ -105,14 +104,12 @@ export const App = () => {
     ) {
       listingProduct++;
       return (
-        <div className="listItem" key={x.id}>
+        <div className="listItem" key={x.id} id={x.id}>
           <h2 className="title">{x.title}</h2>
           <div className="info">
-            <button onClick={(e) => {addProduct(e.target.parentElement.parentElement)}} className="buyBtn" id={x.id}>Sepete Ekle</button>
-            <div className="information">
+            <img onClick={(e) => {addProduct(e.target.parentElement.parentElement)}} className="buyBtn"  src="../src/assets/img/icons8-add-cart-36.png" alt="" />
             <h4 className="price">Fiyat: {x.price}TL </h4>
             <h4 className="stock">Stok: {x.stock} Adet </h4>
-            </div>
           </div>
         </div>
       );
@@ -121,12 +118,30 @@ export const App = () => {
   });
 
   const addProduct = (e) => {
-    console.log(e);
+    
     setAddCart([...addCart,e])
     // setAddCart([addCart.push(e)])
     // setAddCart(...addCart,e)
-    console.log(addCart);
+    // console.log(e.id);
+    // productList.forEach(x => {
+    //   x.stock = x.id == e.id && (x.stock -= 1,console.log(x.stock))
+      
+    // })
   }
+
+  const calculateTotalPrice = () => {
+    let totalPrice = 0;
+    addCart.forEach((item) => {
+      const priceText = item.children[1].children[1].textContent;
+      const price = parseInt(priceText.replace("Fiyat:","").trim());
+      if (!isNaN(price)) {
+        totalPrice += price;
+      }
+    });
+    return totalPrice
+  }
+
+  
 
   const setCart =(
       <div className={`slideMenu ${openCart ? 'active' : ''}`}>
@@ -135,19 +150,24 @@ export const App = () => {
           <h1>SEPETİM</h1>
           {addCart.map((item,index) => (
             <div className="product" key={index}>
+              <p style={{cursor:"pointer",position:"absolute",marginLeft:"175px"}} onClick={() => removeCart(index)}>❌</p>
               <h2>{item.children[0].textContent}</h2>
-              <h4>{item.children[1].children[1].children[0].textContent}</h4>
+              <h4>{item.children[1].children[1].textContent}</h4>
             </div>
           ))}
           <div className="total">
-            4120893TL
+            Toplam: {calculateTotalPrice()}TL
           </div>
         </div>
       </div>
   )
+
+  const removeCart = (productId) => {
+    const updatedCart = addCart.filter((i, index) => index !== productId);
+    setAddCart(updatedCart);
+  };
   
-
-
+  
   const clickedVar = (e) => {
     setSelectedCategory(e.target.textContent);
   }

@@ -99,14 +99,17 @@ body {
   border-radius: 8px 8px 0px 0px;
 }
 
+.title {
+  flex:2;
+}
+
 .info {
   display: flex;
   flex-direction: row;
   gap: 16px;
-  text-align: left;
   align-items: center;
   justify-content: space-between;
-  width: 350px;
+  flex:8;
 }
 
 .info h4 {
@@ -132,9 +135,8 @@ body {
 .buyBtn {
   border: none;
   padding: 8px;
-  width: 100px;
+  width: 36px;
   border-radius: 8px;
-  background-color: rgba(0, 0, 0, 0.13);
 }
 
 .buyBtn:hover {
@@ -177,6 +179,7 @@ body {
 }
 
 .slideMenu img {
+  z-index: 99;
   position: absolute;
   left: 0px;
   top: calc(50%);
