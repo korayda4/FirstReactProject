@@ -7,8 +7,7 @@ export const App = () => {
   const [listProduct, setListProduct] = useState("12");
   const [openCart, setOpenCart] = useState(false);
   const [addCart, setAddCart] = useState([]);
-
-  const productList = [
+  const [productList, setProductList] = useState([
     {
       id:1,
       title:"Iphone 15 Pro",
@@ -93,21 +92,22 @@ export const App = () => {
       price:2000,   
       stock:3
     }
-  ]
+  ])
+
   let listingProduct = 1;
   const productRender = productList.map((x) => {
     
     if(listingProduct > listProduct) return
     if (
       (selectedCategory === null || selectedCategory === "Hepsi" || x.category === selectedCategory) &&
-      (searchProduct === "" || x.title.toLowerCase() === searchProduct.toLowerCase())
+      (searchProduct === "" || x.title.toLowerCase().includes(searchProduct.trim().toLowerCase()))
     ) {
       listingProduct++;
       return (
         <div className="listItem" key={x.id} id={x.id}>
           <h2 className="title">{x.title}</h2>
           <div className="info">
-            <img onClick={(e) => {addProduct(e.target.parentElement.parentElement)}} className="buyBtn"  src="../src/assets/img/icons8-add-cart-36.png" alt="" />
+            <img onClick={(e) => {addProduct(e.target.parentElement.parentElement),setStock(e.target.parentElement.parentElement)}} className="buyBtn"  src="../src/assets/img/icons8-add-cart-36.png" alt="" />
             <h4 className="price">Fiyat: {x.price}TL </h4>
             <h4 className="stock">Stok: {x.stock} Adet </h4>
           </div>
@@ -118,15 +118,41 @@ export const App = () => {
   });
 
   const addProduct = (e) => {
+    const productId = Number(e.id);
+
+    const updatedProductList = productList.map((product) => {
+    if (product.id === productId && product.stock > 0) {
+      setAddCart([...addCart, e]);
+    }
+  })
     
-    setAddCart([...addCart,e])
-    // setAddCart([addCart.push(e)])
-    // setAddCart(...addCart,e)
-    // console.log(e.id);
-    // productList.forEach(x => {
-    //   x.stock = x.id == e.id && (x.stock -= 1,console.log(x.stock))
-      
-    // })
+  };
+
+  const setStock = (e) => {
+    const productId = Number(e.id);
+  
+    const updatedProductList = productList.map((product) => {
+      if (product.id === productId && product.stock > 0) {
+        return { ...product, stock: product.stock - 1 };
+      }
+      return product;
+    });
+
+    setProductList(updatedProductList)
+  }
+
+  const cardAddStock = (e) => {
+    const productId = Number(e.id);
+
+    const updatedProductList = productList.map((product) => {
+      if (product.id === productId) {
+        return { ...product, stock: product.stock + 1 };
+      }
+      return product;
+    });
+
+    setProductList(updatedProductList)
+
   }
 
   const calculateTotalPrice = () => {
@@ -141,16 +167,15 @@ export const App = () => {
     return totalPrice
   }
 
-  
-
   const setCart =(
       <div className={`slideMenu ${openCart ? 'active' : ''}`}>
         <img src="../src/assets/img/icons8-back-36.png" onClick={() => setOpenCart(false)} alt="" />
         <div className="slideContainer">
           <h1>SEPETİM</h1>
           {addCart.map((item,index) => (
+            
             <div className="product" key={index}>
-              <p style={{cursor:"pointer",position:"absolute",marginLeft:"175px"}} onClick={() => removeCart(index)}>❌</p>
+              <p id={item.id} style={{cursor:"pointer",position:"absolute",marginLeft:"175px"}} onClick={(e) => {removeCart(index),cardAddStock(e.target)}}>❌</p>
               <h2>{item.children[0].textContent}</h2>
               <h4>{item.children[1].children[1].textContent}</h4>
             </div>
