@@ -1,5 +1,7 @@
 import { useState } from "react"
-import "./App.css"
+import './App.css'
+import { addProductForm } from "./assets/js/addProduct";
+import { Switch , Button } from 'antd';
 
 export const App = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
@@ -7,6 +9,7 @@ export const App = () => {
   const [listProduct, setListProduct] = useState("12");
   const [openCart, setOpenCart] = useState(false);
   const [addCart, setAddCart] = useState([]);
+  const [deleteProduct,SetDeleteProduct] = useState(false)
   const [productList, setProductList] = useState([
     {
       id:1,
@@ -94,6 +97,15 @@ export const App = () => {
     }
   ])
 
+  const removeProduct = (productId) => {
+    console.log(productId);
+    // productId.id == undefined ?   
+    const updatedProductList = productList.filter((product) => product.id != productId.id);
+    
+    setProductList(updatedProductList);
+  };
+
+
   let listingProduct = 1;
   const productRender = productList.map((x) => {
     
@@ -106,6 +118,7 @@ export const App = () => {
       return (
         <div className="listItem" key={x.id} id={x.id}>
           <h2 className="title">{x.title}</h2>
+          <Button id={x.id} danger onClick={(e) => {removeProduct(e.target.parentElement)}} className={`dangerBtn ${deleteProduct}`} style={{marginLeft:"20px"}}>Sil</Button>
           <div className="info">
             <img onClick={(e) => {addProduct(e.target.parentElement.parentElement),setStock(e.target.parentElement.parentElement)}} className="buyBtn"  src="../src/assets/img/icons8-add-cart-36.png" alt="" />
             <h4 className="price">Fiyat: {x.price}TL </h4>
@@ -158,7 +171,8 @@ export const App = () => {
   const calculateTotalPrice = () => {
     let totalPrice = 0;
     addCart.forEach((item) => {
-      const priceText = item.children[1].children[1].textContent;
+      // console.log(item)
+      const priceText = item.children[2].children[1].textContent;
       const price = parseInt(priceText.replace("Fiyat:","").trim());
       if (!isNaN(price)) {
         totalPrice += price;
@@ -173,11 +187,10 @@ export const App = () => {
         <div className="slideContainer">
           <h1>SEPETİM</h1>
           {addCart.map((item,index) => (
-            
             <div className="product" key={index}>
               <p id={item.id} style={{cursor:"pointer",position:"absolute",marginLeft:"175px"}} onClick={(e) => {removeCart(index),cardAddStock(e.target)}}>❌</p>
               <h2>{item.children[0].textContent}</h2>
-              <h4>{item.children[1].children[1].textContent}</h4>
+              <h4>{item.children[2].children[1].textContent}</h4>
             </div>
           ))}
           <div className="total">
@@ -204,8 +217,17 @@ export const App = () => {
     )
   })
 
+
   return (
     <div className="container">
+      <div className={`adminDiv ${deleteProduct}`}>
+
+          <Button style={{color:"green"}}>Ürün Ekle</Button>
+          {addProductForm()}
+          
+
+      </div>
+      <Switch  onChange={(e) => e ? SetDeleteProduct(true):SetDeleteProduct(false)} />
       {setCart}
       <div className="pageTitle">
         <h1>PRODUCT</h1>

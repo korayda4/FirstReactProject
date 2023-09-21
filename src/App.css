@@ -203,3 +203,22 @@ body {
   margin: 0 auto;
   border-bottom: 0.5px solid rgba(92, 91, 91, 0.521);
 }
+
+.adminDiv {
+  width: calc(100%);
+  background-color: #f0f0f0;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 0.5px solid rgba(128, 128, 128, 0.237);
+}
+
+.adminDiv.false {
+  display: none;
+}
+
+.dangerBtn.false {
+  display: none;
+}
