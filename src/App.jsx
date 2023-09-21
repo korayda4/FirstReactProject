@@ -1,12 +1,12 @@
 import { useState } from "react"
 import './App.css'
-import { addProductForm } from "./assets/js/addProduct";
+import { AddProductForm } from "./assets/js/addProduct";
 import { Switch , Button } from 'antd';
 
 export const App = () => {
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [searchProduct, setSearchProduct] = useState("");
-  const [listProduct, setListProduct] = useState("12");
+  const [listProduct, setListProduct] = useState("30");
   const [openCart, setOpenCart] = useState(false);
   const [addCart, setAddCart] = useState([]);
   const [deleteProduct,SetDeleteProduct] = useState(false)
@@ -98,8 +98,6 @@ export const App = () => {
   ])
 
   const removeProduct = (productId) => {
-    console.log(productId);
-    // productId.id == undefined ?   
     const updatedProductList = productList.filter((product) => product.id != productId.id);
     
     setProductList(updatedProductList);
@@ -222,9 +220,7 @@ export const App = () => {
     <div className="container">
       <div className={`adminDiv ${deleteProduct}`}>
 
-          <Button style={{color:"green"}}>Ürün Ekle</Button>
-          {addProductForm()}
-          
+        <AddProductForm products={productList} setProducts={setProductList}/>
 
       </div>
       <Switch  onChange={(e) => e ? SetDeleteProduct(true):SetDeleteProduct(false)} />
@@ -239,6 +235,12 @@ export const App = () => {
             <option value="6" >6 Ürün</option>
             <option value="9" >9 Ürün</option>
             <option value="12" >12 Ürün</option>
+            <option value="15" >15 Ürün</option>
+            <option value="18" >18 Ürün</option>
+            <option value="21" >21 Ürün</option>
+            <option value="24" >24 Ürün</option>
+            <option value="27" >27 Ürün</option>
+            <option value="30" >30 Ürün</option>
           </select>
         </div>
         </div>
