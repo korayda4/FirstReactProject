@@ -7,7 +7,7 @@ const onSelect = (option) => {
   console.log('select', option);
 };
 
-export const AddProductForm = ({products,setProducts}) => {
+export const AddProductForm = ({products,setProducts,categori,setCategori}) => {
   let productName = useRef("")
   let ProductPrice = useRef("")
   let ProductCategory = useRef("")
@@ -16,9 +16,13 @@ export const AddProductForm = ({products,setProducts}) => {
   
 
   const adminAddProduct = () => {
-    console.log(productName.current.textarea);
     const newProduct = {id:products.length + 1,title:productName.current.textarea.value,price:ProductPrice.current.value,category:ProductCategory.current.textarea.value,stock:ProductStock.current.value}
     setProducts([...products,newProduct])
+    adminAddCategory()
+  }
+
+  const adminAddCategory = () => {
+    setCategori([...categori,ProductCategory.current.textarea.value])
   }
   
   const options = [

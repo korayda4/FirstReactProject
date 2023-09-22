@@ -10,6 +10,7 @@ export const App = () => {
   const [openCart, setOpenCart] = useState(false);
   const [addCart, setAddCart] = useState([]);
   const [deleteProduct,SetDeleteProduct] = useState(false)
+  const [productCategory,setCategory] = useState(["Hepsi","Elektronik","Tekstil","Icecek","Kamp","Spor","Oyuncak"])
   const [productList, setProductList] = useState([
     {
       id:1,
@@ -115,8 +116,8 @@ export const App = () => {
       listingProduct++;
       return (
         <div className="listItem" key={x.id} id={x.id}>
+          <Button id={x.id} danger onClick={(e) => {removeProduct(e.target.parentElement)}} className={`dangerBtn ${deleteProduct}`} style={{fontSize:"8px"}}>❌</Button>
           <h2 className="title">{x.title}</h2>
-          <Button id={x.id} danger onClick={(e) => {removeProduct(e.target.parentElement)}} className={`dangerBtn ${deleteProduct}`} style={{marginLeft:"20px"}}>Sil</Button>
           <div className="info">
             <img onClick={(e) => {addProduct(e.target.parentElement.parentElement),setStock(e.target.parentElement.parentElement)}} className="buyBtn"  src="../src/assets/img/icons8-add-cart-36.png" alt="" />
             <h4 className="price">Fiyat: {x.price}TL </h4>
@@ -187,7 +188,7 @@ export const App = () => {
           {addCart.map((item,index) => (
             <div className="product" key={index}>
               <p id={item.id} style={{cursor:"pointer",position:"absolute",marginLeft:"175px"}} onClick={(e) => {removeCart(index),cardAddStock(e.target)}}>❌</p>
-              <h2>{item.children[0].textContent}</h2>
+              <h2>{item.children[1].textContent}</h2>
               <h4>{item.children[2].children[1].textContent}</h4>
             </div>
           ))}
@@ -205,13 +206,13 @@ export const App = () => {
   
   
   const clickedVar = (e) => {
-    setSelectedCategory(e.target.textContent);
+    setSelectedCategory(e);
   }
   
-  const categories = ["Hepsi","Elektronik","Tekstil","Icecek","Kamp","Spor","Oyuncak"];
-  const renderCategory = categories.map(x => {
+
+  const renderCategory = productCategory.map(x => {
     return(
-      <a onClick={clickedVar} className="categoryLink" href="#" key={x}>{x}</a>
+      <option className="categoryLink" href="#" key={x}>{x}</option>
     )
   })
 
@@ -219,14 +220,15 @@ export const App = () => {
   return (
     <div className="container">
       <div className={`adminDiv ${deleteProduct}`}>
-
-        <AddProductForm products={productList} setProducts={setProductList}/>
-
+        <AddProductForm categori={productCategory} setCategori={setCategory} products={productList} setProducts={setProductList}/>
       </div>
       <Switch  onChange={(e) => e ? SetDeleteProduct(true):SetDeleteProduct(false)} />
       {setCart}
       <div className="pageTitle">
         <h1>PRODUCT</h1>
+        <select onChange={(e) => clickedVar(e.target.value)} style={{border:"none",display:"flex",flexDirection:"column",gap:"2em",margin:"8px",borderRadius:"4px"}}>
+          {renderCategory}
+        </select>
         <div className="input-select">
           <img className="shoppingCart" onClick={(e) => {if(e.target.className === "shoppingCart") setOpenCart(true);}} src="../src/assets/img/icons8-shopping-cart-48.png" alt="" />
           <input onChange={(e) => {setSearchProduct(e.target.value)}} value={searchProduct} className="searchInput" type="text" placeholder="Search Product"/>
@@ -248,9 +250,7 @@ export const App = () => {
           {productRender}
       </div>
       <div className="lower">
-        <div style={{display:"flex",gap:"4.8em",margin:"8px",borderRadius:"4px"}}>
-          {renderCategory}
-        </div>
+        
       </div>
     </div>
   )
